@@ -989,3 +989,25 @@ ui-development: build/api build/api-db build/local-api-data-watcher-pusher build
 .PHONY: api-development
 api-development: build/api build/api-db build/local-api-data-watcher-pusher build/keycloak build/keycloak-db build/broker build/broker-single build/api-redis
 	IMAGE_REPO=$(CI_BUILD_TAG) docker-compose -p $(CI_BUILD_TAG) --compatibility up -d api api-db local-api-data-watcher-pusher keycloak keycloak-db broker api-redis
+
+## CI targets
+
+KUBECONFIG=$(shell mktemp -p . kubeconfig.XXX)
+KINDCONFIG=$(shell mktemp -p . kindconfig.XXX)
+CIMAKEFILE=$(shell mktemp -p . Makefile.XXX)
+CHARTSDIR=$(shell mktemp -dp . lagoon-charts.XXX)
+.PHONY: kind/test
+kind/test:
+		git clone git@github.com:uselagoon/lagoon-charts.git "$(CHARTSDIR)"
+		cp "$(CHARTSDIR)/test-suite.kind-config.yaml" $(KINDCONFIG)
+		echo "nodes:"                 >> $(KINDCONFIG)
+		echo "- role: control-plane"  >> $(KINDCONFIG)
+		echo "  image: $(KIND_IMAGE)" >> $(KINDCONFIG)
+		echo "- role: worker"         >> $(KINDCONFIG)
+		echo "  image: $(KIND_IMAGE)" >> $(KINDCONFIG)
+		KUBECONFIG=$(KUBECONFIG) kind create cluster --config=$(KINDCONFIG)
+		KUBECONFIG=$(KUBECONFIG) 
+
+
+.PHONY: kind/cleanall
+kind/cleanall:
