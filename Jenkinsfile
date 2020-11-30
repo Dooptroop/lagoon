@@ -74,7 +74,7 @@ pipeline {
     }
     stage ('run test suite') {
       steps {
-        sh script: "echo make -O${SYNC_MAKE_OUTPUT} -j8 kind/test", label: "Running tests on kind ${version.replaceFirst(/@.*$/,"")} cluster"
+        sh script: "echo make -O${SYNC_MAKE_OUTPUT} -j8 kind/test", label: "Running tests on kind cluster"
       }
     }
     stage ('push images to testlagoon/* with :latest tag') {
