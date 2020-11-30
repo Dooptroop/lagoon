@@ -2,7 +2,6 @@ pipeline {
   agent any
   options {
     parallelsAlwaysFailFast()
-    timestamps()
   }
 
   environment {
@@ -55,8 +54,10 @@ pipeline {
         changeRequest()
       }
       steps {
-        pullRequest.labels.each{
-          echo "This PR has labels: $it"
+        script {
+          pullRequest.labels.each {
+            echo "This PR has labels: $it"
+          }
         }
       }
     }
