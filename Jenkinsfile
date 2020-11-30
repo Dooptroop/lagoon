@@ -51,11 +51,12 @@ pipeline {
       }
     }
     stage ('check PR labels') {
+      when {
+        changeRequest()
+      }
       steps {
-        if (env.CHANGE_ID) {
-          pullRequest.labels.each{
-            echo "This PR has labels: $it"
-          }
+        pullRequest.labels.each{
+          echo "This PR has labels: $it"
         }
       }
     }
