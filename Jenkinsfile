@@ -24,14 +24,6 @@ pipeline {
         sh 'env'
       }
     }
-    stage ('checkout') {
-      steps {
-        deleteDir()
-        checkout scm
-        echo "commit hash:"
-        echo env.GIT_COMMIT
-      }
-    }
     stage ('test commit hash') {
       steps {
         echo "commit hash in a subsequent stage:"
