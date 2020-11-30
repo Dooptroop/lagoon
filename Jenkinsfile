@@ -28,8 +28,15 @@ pipeline {
     stage ('checkout') {
       steps {
         deleteDir()
-        def checkout = checkout scm
-        env.GIT_COMMIT = checkout["GIT_COMMIT"]
+        checkout scm
+        echo "commit hash:"
+        echo env.GIT_COMMIT
+      }
+    }
+    stage ('test commit hash') {
+      steps {
+        echo "commit hash in a subsequent stage:"
+        echo env.GIT_COMMIT
       }
     }
     // in order to have the newest images from upstream (with all the security updates) we clean our local docker cache on tag deployments
