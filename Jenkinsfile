@@ -24,12 +24,6 @@ pipeline {
         sh 'env'
       }
     }
-    stage ('test commit hash') {
-      steps {
-        echo "commit hash in a subsequent stage:"
-        echo env.GIT_COMMIT
-      }
-    }
     // in order to have the newest images from upstream (with all the security updates) we clean our local docker cache on tag deployments
     // we don't do this all the time to still profit from image layer caching
     // but we want this on tag deployments in order to ensure that we publish images always with the newest possible images.
