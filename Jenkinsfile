@@ -118,6 +118,7 @@ pipeline {
     cleanup {
       sh "echo make kind/cleanall"
       sh "make clean"
+      sh "date"
     }
   }
 }
